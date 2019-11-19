@@ -24,6 +24,18 @@
       :value="velocidade[1]"
       />
     </div>
+    <div class="col">
+      <h1>Temperatura</h1>
+      <vue-speedometer
+      :minValue="-100"
+      :maxValue="100"
+      :needleHeightRatio="0.7"
+      :maxSegmentLabels="11"
+      :customSegmentStops="[-100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100]"
+      :segmentColors='["blue", "blue", "lightblue", "lightblue", "grey", "grey", "limegreen", "gold", "orange", "firebrick"]'
+      :value="temperatura"
+      />
+    </div>
   </div>
 </template>
 
@@ -39,31 +51,35 @@ export default {
     return {
       tag: '#',
       velocidade: [],
-      temperatura: '',
-      ultrassom: '',
+      temperatura: null,
+      ultrassom: null,
       buffer: ''
     }
   },
   mqtt: {
-    'c0/temp' (valor) {
-      this.temperatura = valor
-      // console.log(this.temperatura)
+    '#' (valor, tag) {
+      // console.log(tag, valor)
     },
-    'c0/ir' (valor) {
+    '#/c0/temp' (valor) {
+      console.log(valor)
+      this.temperatura = Number(valor)
+      // console.log('temperatura', this.temperatura)
     },
-    'c0/ultra' (valor) {
-      this.ultrassom = valor
+    '#/c0/ir' (valor) {
     },
-    'c0/acel' (valor) {
+    '#/c0/ultra' (valor) {
+      this.ultrassom = Number(valor)
     },
-    'c0/eng' (dados, topico) {
+    '#/c0/acel' (valor) {
+    },
+    '#/c0/eng' (dados, topico) {
       let buffer = new TextDecoder().decode(dados)
       this.velocidade = buffer.split(',')
-      this.velocidade[0] = ((this.velocidade[0] - 128) / 12.8)
-      this.velocidade[1] = ((this.velocidade[1] - 128) / 12.8)
+      this.velocidade[0] = (Number(this.velocidade[0] - 128) / 12.8)
+      this.velocidade[1] = (Number(this.velocidade[1] - 128) / 12.8)
       // console.log('velocidade: ', this.velocidade)
     },
-    'c0/servo' (valor) {
+    '#/c0/servo' (valor) {
     }
   },
   mounted () {

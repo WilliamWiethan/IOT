@@ -3,6 +3,7 @@
     <!-- <h1>{{ dados }}</h1> -->
     <div class="row">
       <div class="col-lg-4" v-for="i in teste" :key="i">
+        <h1> {{nomes[i]}} </h1>
         <pure-vue-chart
           :points="dados[i]"
           :width="400"
@@ -36,46 +37,51 @@ export default {
       dados: [[], [], [], [], [], []],
       message: null,
       teste: [0, 1, 2, 3, 4, 5],
+      nomes: ['temp', 'ir', 'ultra', 'acel', 'eng', 'servo'],
       aux: ''
     }
   },
   mqtt: {
-    'c0/temp' (valor) {
+    '#' (valor, tag) {
+      // console.log(tag)
+      console.log('valor: ', valor)
+    },
+    '#/c0/temp' (valor) {
       this.aux = valor
       if (this.dados[0].length >= 10) {
         this.dados[0].splice(0, 1)
       }
       this.dados[0].push(Number(this.aux))
     },
-    'c0/ir' (valor) {
+    '#/c0/ir' (valor) {
       this.aux = valor
       if (this.dados[1].length >= 10) {
         this.dados[1].splice(0, 1)
       }
       this.dados[1].push(Number(this.aux))
     },
-    'c0/ultra' (valor) {
+    '#/c0/ultra' (valor) {
       this.aux = valor
       if (this.dados[2].length >= 10) {
         this.dados[2].splice(0, 1)
       }
       this.dados[2].push(Number(this.aux))
     },
-    'c0/acel' (valor) {
+    '#/c0/acel' (valor) {
       this.aux = valor
       if (this.dados[3].length >= 10) {
         this.dados[3].splice(0, 1)
       }
       this.dados[3].push(Number(this.aux))
     },
-    'c0/eng' (valor) {
+    '#/c0/eng' (valor) {
       this.aux = valor
       // if (this.dados[4].length >= 14) {
       //   this.dados[4].splice(0, 1)
       // }
       this.dados[4][0] = this.aux
     },
-    'c0/servo' (valor) {
+    '#/c0/servo' (valor) {
       this.aux = valor
       if (this.dados[5].length >= 10) {
         this.dados[5].splice(0, 1)
