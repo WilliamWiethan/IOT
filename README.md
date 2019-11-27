@@ -1,5 +1,13 @@
 # kontra-tesla
 
+Acesse a classe main.js e mude endereço para o endereço do servidor.
+Dentro da diretório da aplicação abra um terminal e execute os seguintes comandos:
+
+```
+nvm use 13
+npm install
+npm run serve
+```
 ## Project setup
 ```
 npm install
